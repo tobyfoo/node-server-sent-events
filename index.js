@@ -27,8 +27,11 @@ function sse(req, res, next) {
     res.sse(':keep-alive\n\n');
   }, 20000);
 
-  // cleanup on close
+  // cleanup on close and finish
   res.on('close', function close() {
+    clearInterval(keepAlive);
+  });
+  res.on('finish', function finish() {
     clearInterval(keepAlive);
   });
 
